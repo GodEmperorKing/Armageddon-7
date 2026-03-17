@@ -19,7 +19,6 @@ The application relies on dynamically retrieving secure strings rather than hard
 
 * **Evidence:** Successfully fetched the decrypted database master credentials from AWS Secrets Manager.
 ![Secrets Manager Retrieval](./lab1/secrets-manager-retrieval.png)
-*(Note: Alternative view of combined parameter and secret retrieval captured in `Screenshot 2026-03-10 115054.jpg`)*
 
 ## 4. Application Functionality Test
 Testing the application locally on the EC2 web server to ensure it is running and properly serving the API endpoints.
@@ -33,7 +32,6 @@ To ensure operational visibility, the application is configured to stream logs t
 
 * **Evidence:** Successfully queried and filtered the CloudWatch log events for errors (returning empty, indicating healthy operation).
 ![CloudWatch Log Filtering](./lab1/cloudwatch-log-filtering.png)
-*(Note: Additional log filtering evidence captured in `Screenshot 2026-03-10 125317.png`)*
 
 * **Evidence:** The CloudWatch Metric Alarm (`lab-db-connection`) was successfully provisioned to monitor database connection failures.
 ![CloudWatch Alarms Verification](./lab1/cloudwatch-alarms-verification.png)

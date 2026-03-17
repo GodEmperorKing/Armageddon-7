@@ -6,15 +6,15 @@ This document contains the verification evidence for the deployment of a highly 
 ## 1. Verified Origin Cloaking (The Inner Shield)
 The architecture uses custom HTTP headers (`X-Chewbacca-Growl`) and strict Security Group rules to drop any traffic that does not originate from the CloudFront CDN.
 * **Evidence (Direct ALB Access - Blocked):** A direct `curl` request to the Application Load Balancer is successfully rejected with an `HTTP 403 Forbidden` response, proving the origin is cloaked.
-![ALB Direct Access Forbidden](./alb-direct-access-forbidden.jpg)
+![ALB Direct Access Forbidden](./alb-direct-access-forbidden.png)
 
 * **Evidence (CloudFront Access - Allowed):** A `curl` request routed properly through the CloudFront custom domain (`palpatinedesign.click`) returns an `HTTP 200 OK`, proving the CDN is the only allowed pathway.
-![CloudFront Access Success](./cloudfront-access-success.jpg)
+![CloudFront Access Success](./cloudfront-access-success.png)
 
 ## 2. WAF Integration & Edge Defense
 To protect against common web exploits, an AWS WAF WebACL ("Malgus edge defense") is attached directly to the global CloudFront distribution.
 * **Evidence:** AWS CLI queries successfully return the WAF's Amazon Resource Name (ARN) and confirm its active attachment to the CloudFront distribution ID (`EYQBQSRPJ80ES`).
-![WAF Attachment Verification](./waf-cloudfront-attachment-verify.jpg)
+![WAF Attachment Verification](./waf-cloudfront-attachment-verify.png)
 
 ## 3. Global DNS Routing (Route 53)
 Amazon Route 53 is configured to resolve the custom domain securely to the globally distributed CloudFront Edge locations.

@@ -31,7 +31,7 @@ To ensure operational visibility, the application is configured to stream logs t
 ![CloudWatch Log Group Creation](./lab1/cloudwatch-log-group.png)
 
 * **Evidence:** Successfully queried and filtered the CloudWatch log events for errors (returning empty, indicating healthy operation).
-![CloudWatch Log Filtering](./lab1/cloudwatch-log-filtering.png)
+![CloudWatch Log Filtering](./lab1/cloudwatch-log-filtering-error.png)
 
 * **Evidence:** The CloudWatch Metric Alarm (`lab-db-connection`) was successfully provisioned to monitor database connection failures.
 ![CloudWatch Alarms Verification](./lab1/cloudwatch-alarms-verification.png)

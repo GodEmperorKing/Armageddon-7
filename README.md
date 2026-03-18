@@ -11,7 +11,7 @@ This SEIR Gate verification script confirms that the IAM roles, Secrets Manager 
 The final state of the infrastructure (Lab 1C) was successfully deployed using Terraform, proving the automated provisioning of SSM parameters, VPC networks, and RDS resources.
 * **Evidence:** `terraform apply` completed successfully with all expected outputs generated (VPC ID, Subnet IDs, RDS Endpoint, etc.).
 
-![Terraform Apply Output](./lab1/terraform-apply.png)
+![Terraform Apply Output](./lab1/terraform-apply-output.png)
 
 ## 3. Systems Manager (SSM) & Secrets Manager Verification
 The application relies on dynamically retrieving secure strings rather than hardcoding credentials. These tests verify the EC2 instance can successfully query these managed services.

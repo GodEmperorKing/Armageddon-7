@@ -38,7 +38,7 @@ To ensure operational visibility, the application is configured to stream logs t
 
 ---
 **Status:** All Lab 1 requirements successfully built, secured, and verified.
-# Lab 1: Foundational AWS Web Architecture & Database Integration 🏗️
+## Lab 1: Foundational AWS Web Architecture & Database Integration 🏗️
 
 ## Overview
 This project demonstrates the manual configuration and deployment of a secure, highly available, two-tier web application architecture on AWS. The environment was built from scratch utilizing a custom Virtual Private Cloud (VPC), a public-facing web server (EC2), and a private, secure backend database (RDS). 

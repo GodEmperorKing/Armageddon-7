@@ -5,37 +5,37 @@ This document contains the verification evidence for the successful deployment, 
 ## 1. Automated Architecture & Security Verification
 This SEIR Gate verification script confirms that the IAM roles, Secrets Manager configurations, EC2 instances, and RDS network security groups are properly deployed and locked down.
 * **Evidence:** All checks passed, confirming the database is private and strictly accessible via the proper security group routing.
-![Security Gate Verification](./lab1/security-gate-verification.png)
+![Security Gate Verification](./lab-1a-c_deliverables/security-gate-verification.png)
 
 ## 2. Infrastructure as Code (Terraform) Execution
 The final state of the infrastructure (Lab 1C) was successfully deployed using Terraform, proving the automated provisioning of SSM parameters, VPC networks, and RDS resources.
 * **Evidence:** `terraform apply` completed successfully with all expected outputs generated (VPC ID, Subnet IDs, RDS Endpoint, etc.).
 
-![Terraform Apply Output](./lab1/terraform-apply-output.png)
+![Terraform Apply Output](./lab-1a-c_deliverables/terraform-apply-output.png)
 
 ## 3. Systems Manager (SSM) & Secrets Manager Verification
 The application relies on dynamically retrieving secure strings rather than hardcoding credentials. These tests verify the EC2 instance can successfully query these managed services.
 * **Evidence:** Successfully fetched the database endpoint, name, and port from SSM Parameter Store.
-![SSM Parameter Retrieval](./lab1/ssm-parameter-retrieval.png)
+![SSM Parameter Retrieval](./lab-1a-c_deliverables/ssm-parameter-retrieval.png)
 
 * **Evidence:** Successfully fetched the decrypted database master credentials from AWS Secrets Manager.
-![Secrets Manager Retrieval](./lab1/secrets-manager-retrieval.png)
+![Secrets Manager Retrieval](./lab-1a-c_deliverables/secrets-manager-retrieval.png)
 
 ## 4. Application Functionality Test
 Testing the application locally on the EC2 web server to ensure it is running and properly serving the API endpoints.
 * **Evidence:** The `curl http://localhost/list` command successfully returned the expected HTML list structure, confirming the local web server is active.
-![Application Localhost Test](./lab1/application-localhost-test.png)
+![Application Localhost Test](./lab-1a-c_deliverables/application-localhost-test.png)
 
 ## 5. CloudWatch Logging & Monitoring
 To ensure operational visibility, the application is configured to stream logs to AWS CloudWatch and trigger alarms based on specific metrics.
 * **Evidence:** The log group `lab-1a/app` was successfully created and verified via the AWS CLI.
-![CloudWatch Log Group Creation](./lab1/cloudwatch-log-group.png)
+![CloudWatch Log Group Creation](./lab-1a-c_deliverables/cloudwatch-log-group.png)
 
 * **Evidence:** Successfully queried and filtered the CloudWatch log events for errors (returning empty, indicating healthy operation).
-![CloudWatch Log Filtering](./lab1/cloudwatch-log-filter-error.png)
+![CloudWatch Log Filtering](./lab-1a-c_deliverables/cloudwatch-log-filter-error.png)
 
 * **Evidence:** The CloudWatch Metric Alarm (`lab-db-connection`) was successfully provisioned to monitor database connection failures.
-![CloudWatch Alarms Verification](./lab1/cloudwatch-alarms-verification.png)
+![CloudWatch Alarms Verification](./lab-1a-c_deliverables/cloudwatch-alarms-verification.png)
 
 ---
 **Status:** All Lab 1 requirements successfully built, secured, and verified.
@@ -50,7 +50,7 @@ A core focus of this lab is **security and least-privilege access**. Instead of 
 * **Amazon VPC:** Custom network encompassing `10.239.0.0/16`, utilizing 3 Availability Zones with a mix of public and private subnets, managed via an Internet Gateway and a Regional NAT Gateway.
 * **Amazon EC2:** Amazon Linux 2023 (`t3.micro`) web server deployed in a public subnet, bootstrapped dynamically via a `user_data.sh` script to install dependencies and run the application.
 * **Amazon RDS:** Managed MySQL 8.4.7 database (`db.t3.micro`) deployed securely without public access.
-* **AWS Secrets Manager:** Securely stores and manages the RDS master credentials (`lab1a-rds-mysql`).
+* **AWS Secrets Manager:** Securely stores and manages the RDS master credentials (`lab-1a-c_deliverablesa-rds-mysql`).
 * **AWS IAM:** Custom role (`ec2-rds-role`) with attached inline JSON policies allowing the EC2 instance to read specifically designated secrets.
 * **Security Groups:** * **Web SG:** Allows inbound HTTP (80) globally and SSH (22) restricted to a specific administrator IP.
   * **Database SG:** Strictly limits inbound MySQL (3306) traffic to originate *only* from the Web Security Group.
@@ -63,7 +63,7 @@ A core focus of this lab is **security and least-privilege access**. Instead of 
    * `/add?note=[text]` - Writes data to the secure private database.
    * `/list` - Retrieves and displays stored database records.
 
-![API Localhost Verification](./lab1/application-localhost-test.png)
+![API Localhost Verification](./lab-1a-c_deliverables/application-localhost-test.png)
 
 ## Teardown & State Management
 To manage cloud costs, active compute and networking resources (EC2, RDS, NAT Gateway, VPC) were terminated at the conclusion of the lab. Persistent identity and security configurations (IAM Roles, Secrets Manager entries) were retained for integration into subsequent infrastructure-as-code deployments (Lab 1B).

@@ -34,6 +34,9 @@ Confirming that the underlying web application and private database deployed in 
 **Objective:** Ensure static assets (`/static/*`) are aggressively cached at the edge to reduce origin load, while strictly enforcing the `Cache-Control` header challenge.
 * **Implementation:** Applied a custom cache policy (`default_ttl = 86400`) and successfully deployed a Response Headers Policy to override origin headers.
 * **Evidence:** A Python probe confirms a `Hit from cloudfront` with incrementing `age` headers, while successfully forcing the `cache-control: public, max-age=86400, immutable` response from the edge location.
+
+*(Note: The local `probe.py` script shown in the terminal evidence has been officially committed to this repository as `python/malgus_cloudfront_cache_probe.py` for clarity).*
+
 ![Static Cache Success](./01_static_cache_hit_success.png)
 
 ## 6. Dynamic API Security (Mitigating Failure A)

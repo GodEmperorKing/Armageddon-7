@@ -38,13 +38,13 @@ A core focus of this lab is **security and least-privilege access**. Instead of 
 *(Note: Additional verification of combined SSM and Secrets retrieval can be seen in `combined-ssm-secrets-retrieval.png`)*
 
 ### B. Application & End-to-End Data Path Proof
-**Objective:** Confirm the application layer can securely initialize, write to, and read from the private database using the injected secrets.
+**Objective:** Confirm the application layer can securely initialize and communicate with the private database.
 
-* **End-to-End Functionality:** The application successfully bootstraps the database (`/init`), writes custom records (`/add`), and retrieves them (`/list`), proving the VPC routing, Security Groups, and database connection strings are all perfectly aligned.
-![App Data Validation](./application-localhost-test.png)
+* **Database Connectivity & Logic Check:** The terminal output confirms a successful `curl` request to the `/list` endpoint. While the database was captured immediately following the `/init` command (showing a successful empty list structure `<ul></ul>`), the lack of a "500 Internal Server Error" proves the Python API successfully fetched the secret, authenticated with RDS, and queried the table.
+![App Connectivity Validation](./application-localhost-test.png)
 
 ### C. Observability & Monitoring Proof
-**Objective:** Ensure the environment is instrumented for rapid incident response and troubleshooting.
+**Objective:** Ensure the environment is instrumented for rapid incident response and troubleshooting. Also, a Standard SNS Topic was provisioned and integrated with the CloudWatch Alarm to ensure immediate email notification upon database connectivity failure."
 
 * **Log Aggregation:** The CloudWatch Agent on the EC2 instance is successfully streaming application logs (`/var/log/rdsapp.log`) to the designated CloudWatch Log Group.
 ![CloudWatch Logs Overview](./cloudwatch-logs-overview.png)
@@ -69,6 +69,46 @@ A core focus of this lab is **security and least-privilege access**. Instead of 
 * **To prevent recurrence:** Implement stricter IAM (Identity and Access Management) policies or AWS Config rules to prevent unauthorized users from modifying or deleting critical Security Group rules in the production environment.
 
 ---
+
+## 📝 Lab Deliverables: Q&A
+
+**A) Why is the DB inbound source restricted to the EC2 security group?**
+By referencing the EC2 Security Group ID instead of an IP address or CIDR block, we ensure that only compute resources dynamically assigned to the web tier can communicate with the database. It prevents direct access from the public internet or other unauthorized subnets, establishing a strict zero-trust boundary.
+
+**B) What port does MySQL use?**
+MySQL communicates over **TCP Port 3306**.
+
+**C) Why is Secrets Manager better than storing creds in code/user-data?**
+Hardcoding credentials in code or user-data exposes plaintext passwords in version control (GitHub) or EC2 instance metadata. Using AWS Secrets Manager encrypts the credentials at rest, allows for automated key rotation, and enforces IAM least-privilege access at runtime (meaning the server has to authorize itself to fetch the password).
+
+---
+
+### Deliverable 3: CLI Audit Evidence (JSON Outputs)
+As required for technical verification, the following JSON files contain the direct AWS CLI outputs confirming the state and configuration of the infrastructure prior to teardown:
+
+* [EC2 Instance Verification](./ec2-verification.json)
+* [IAM Role Attachment](./iam-role.json)
+* [RDS Instance State](./rds-state.json)
+* [RDS Endpoint Verification](./rds-endpoint.json)
+* [Security Group Rules (Port 3306 Restricted)](./sg-rules.json)
+
+---
+
+🧠 Lab 1b: Operations & Reflection
+A) Why might Parameter Store still exist alongside Secrets Manager?
+Parameter Store is often used for non-sensitive configuration data (like hostnames, feature flags, or environment variables) because it is cost-effective and provides a simple hierarchical structure. Secrets Manager is specifically designed for sensitive credentials that require high-security features like built-in lifecycle management and automated rotation. Using both allows an organization to balance cost with high-end security.
+
+B) What breaks first during secret rotation?
+Typically, the application connection breaks first. If a secret is rotated in AWS Secrets Manager but the application is still using a cached version of the old password, it will receive a 403 Access Denied or Connection Refused error. This is why applications must be designed to "retry" a fetch from Secrets Manager if they encounter a credential failure.
+
+C) Why should alarms be based on symptoms instead of causes?
+Symptoms (like a 500 Internal Server Error or a high error count in logs) tell you that the user experience is degraded, which is what matters most. A "cause" (like a specific security group rule being deleted) might not always result in a failure if there is redundancy. By alerting on symptoms, you ensure you are paged for every actual outage without being overwhelmed by "noise" from non-critical configuration changes.
+
+D) How does this lab reduce mean time to recovery (MTTR)?
+This lab reduces MTTR by providing Observability. Instead of manually hunting through the AWS Console to guess why the app is down, the CloudWatch Alarm and Log Filter point the engineer directly to the error (e.g., "Access Denied to RDS"). Combined with storing configuration in Parameter Store, the engineer can restore service using known-good values immediately.
+
+E) What would you automate next?
+The next logical step is to move from manual configuration to Infrastructure as Code (IaC) using Terraform or CloudFormation. Automating the deployment of the CloudWatch Alarms and the Security Group rules would prevent the "manual drift" that caused the incident in this lab, effectively preventing the failure before it even happens.
 
 ## Teardown & State Management
 To manage cloud costs, active compute and networking resources (EC2, RDS, NAT Gateway, VPC) were terminated at the conclusion of the lab. Persistent identity and security configurations (IAM Roles, Secrets Manager entries) were retained for integration into subsequent infrastructure-as-code deployments.

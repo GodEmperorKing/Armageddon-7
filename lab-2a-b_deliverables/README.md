@@ -49,4 +49,5 @@ Confirming that the underlying web application and private database deployed in 
 **Design Decision:** My cache key for `/api/*` is set to 'none' because API data is dynamic. I forward the `Authorization` and `Host` headers through the Origin Request Policy so the backend server can properly process the request, but I intentionally exclude them from the cache key to strictly avoid data leaks between users.
 
 ---
+
 **Final Status:** Lab 2A & 2B Edge Architecture and Caching successfully provisioned, secured, and verified.

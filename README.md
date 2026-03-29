@@ -71,3 +71,5 @@ To manage cloud costs, active compute and networking resources (EC2, RDS, NAT Ga
 Triggering Jenkins Webhook!
 
 Triggering Jenkins Webhook2!
+
+Build #2: Automated S3 Deployment Ready

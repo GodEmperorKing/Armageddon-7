@@ -74,4 +74,4 @@ Triggering Jenkins Webhook2!
 
 Build #2: Automated S3 Deployment Ready
 
-Terraform is live. S3 Deployment Successful.
+Terraform is live. S3 Deployment Successful

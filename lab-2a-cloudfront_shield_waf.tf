@@ -1,8 +1,6 @@
 ### WAFv2 Web ACL (Darth Malgus's Shield Generator)
 
-### Explanation: Malgus does not leave the edge undefended. This Web Application Firewall (WAF)
-### sits on CloudFront and inspects every incoming ship. If it detects rebel signatures 
-### (SQL injection, bad bots), it blasts them out of the sky before they ever reach the ALB.
+### Explanation: Malgus does not leave the edge undefended. This Web Application Firewall (WAF) sits on CloudFront and inspects every incoming ship. If it detects rebel signatures (SQL injection, bad bots), it blasts them out of the sky before they ever reach the ALB.
 resource "aws_wafv2_web_acl" "cloudfront_waf" {
   name        = "malgus-cloudfront-waf01"
   description = "Malgus edge defense - Blocks Rebel Alliance traffic"
@@ -14,8 +12,7 @@ resource "aws_wafv2_web_acl" "cloudfront_waf" {
 
   ### Managed Rule: AWS Common Rule Set
 
-  ### Explanation: AWS managed rules are like hiring Imperial commandos. 
-  ### They already know the most common rebel attack patterns.
+  ### Explanation: AWS managed rules are like hiring Imperial commandos. They already know the most common rebel attack patterns.
   rule {
     name     = "Imperial-Commandos-Common-Rule-Set"
     priority = 1
@@ -41,8 +38,7 @@ resource "aws_wafv2_web_acl" "cloudfront_waf" {
 
   ### WAF Radar (CloudWatch Metrics Integration)
 
-  ### Explanation: THIS is what your Python script is reading! 
-  ### It pushes the total number of blocked requests up to CloudWatch.
+  ### Explanation: THIS is what your Python script is reading! It pushes the total number of blocked requests up to CloudWatch.
   visibility_config {
     cloudwatch_metrics_enabled = true
     metric_name                = "MalgusTotalWAFBlocks"

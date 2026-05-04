@@ -1,12 +1,12 @@
 ### Sao Paulo VPC (The Liberdade Outer Rim)
 
-### Explanation: We must explicitly tell Terraform to build this in Brazil.
+### Explanation: Explicitly tell Terraform to build this in Brazil.
 provider "aws" {
   alias  = "saopaulo"
   region = "sa-east-1"
 }
 
-### Explanation: The new isolated network for the clinics, using your specific student IP block.
+### Explanation: The new isolated network for the clinics, using my specific IP block.
 resource "aws_vpc" "liberdade_vpc01" {
   provider             = aws.saopaulo
   cidr_block           = "10.239.0.0/16" 

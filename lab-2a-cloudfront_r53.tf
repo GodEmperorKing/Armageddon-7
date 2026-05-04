@@ -10,8 +10,7 @@ locals {
 
 ### Hosted Zone (Data lookup)
 
-### Explanation: Since AWS automatically claimed Kashyyyk (your domain) when you bought it, 
-### we just need to read it using a data block instead of creating a new one.
+### Explanation: Since AWS automatically claimed Kashyyyk (your domain) when you bought it, we just need to read it using a data block instead of creating a new one.
 data "aws_route53_zone" "chewbacca_zone01" {
   name         = local.chewbacca_zone_name
   private_zone = false
@@ -78,7 +77,7 @@ resource "aws_route53_record" "chewbacca_apex_to_cf01" {
   }
 }
 
-# Explanation: app.chewbacca-growl.com also points to CloudFront — same doorway, different sign.
+### Explanation: app.chewbacca-growl.com also points to CloudFront — same doorway, different sign.
 resource "aws_route53_record" "chewbacca_app_to_cf01" {
   zone_id = data.aws_route53_zone.chewbacca_zone01.zone_id
   name    = "www.palpatinedesign.click"

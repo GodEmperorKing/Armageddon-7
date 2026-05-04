@@ -1,7 +1,6 @@
 ### Lab 2A Outputs (CLI Grading Cheat Sheet)
 
-### Explanation: These outputs provide the exact IDs and URLs you need to run your 
-### professor's CLI verification tests and prove your defenses are operational.
+### Explanation: These outputs provide the exact IDs and URLs I need to run my professor's CLI verification tests and prove my defenses are operational.
 
 output "lab2_deliverable_1_alb_dns" {
   description = "TEST 1A: Direct ALB access. Run 'curl -I' against this URL. It MUST return 403 Forbidden."
